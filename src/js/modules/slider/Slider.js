@@ -2,9 +2,9 @@ export default class Slider {
     constructor({sliderSelector, slideSelector, nextBtnSelector, prevBtnSelector, resetBtnSelector, activeClass}) {
         this.slider = document.querySelector(sliderSelector)
         this.slides = slideSelector ? this.slider.querySelectorAll(slideSelector) : this.slider.children
-        this.nextBtns = this.slider.querySelectorAll(nextBtnSelector)
-        this.prevBtns = this.slider.querySelectorAll(prevBtnSelector)
-        this.resetBtns = this.slider.querySelectorAll(resetBtnSelector)
+        this.nextBtns = document.querySelectorAll(nextBtnSelector)
+        this.prevBtns = document.querySelectorAll(prevBtnSelector)
+        this.resetBtns = document.querySelectorAll(resetBtnSelector)
         this.activeClass = activeClass
         this.numberOfSlides = this.slides.length
         this.__currentSlide = 1
@@ -31,7 +31,6 @@ export default class Slider {
 
     resetSlider() {
         this.currentSlide = 1
-        console.log(this.currentSlide)
         if (this.updateSlider) this.updateSlider()
     }
 

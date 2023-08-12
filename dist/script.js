@@ -46,6 +46,48 @@ class MainSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
+/***/ "./src/js/modules/slider/MiniSlider.js":
+/*!*********************************************!*\
+  !*** ./src/js/modules/slider/MiniSlider.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MiniSlider)
+/* harmony export */ });
+/* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Slider */ "./src/js/modules/slider/Slider.js");
+
+class MiniSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  updateSlider() {
+    this.setActiveClass();
+  }
+  nextSlide() {
+    this.slider.append(this.slides[0]);
+    super.nextSlide();
+  }
+  prevSlide() {
+    this.slider.prepend(this.slides[this.numberOfSlides - 1]);
+    super.prevSlide();
+  }
+  setActiveClass() {
+    ;
+    [...this.slides].forEach((slide, i) => {
+      i === 0 ? slide.classList.add(this.activeClass) : slide.classList.remove(this.activeClass);
+    });
+  }
+  init() {
+    super.init();
+    this.slider.style.overflow = 'hidden';
+    this.slider.style.display = 'flex';
+    [...this.slides].forEach(slide => {
+      slide.style.flexShrink = '0';
+    });
+  }
+}
+
+/***/ }),
+
 /***/ "./src/js/modules/slider/Slider.js":
 /*!*****************************************!*\
   !*** ./src/js/modules/slider/Slider.js ***!
@@ -68,9 +110,9 @@ class Slider {
     } = _ref;
     this.slider = document.querySelector(sliderSelector);
     this.slides = slideSelector ? this.slider.querySelectorAll(slideSelector) : this.slider.children;
-    this.nextBtns = this.slider.querySelectorAll(nextBtnSelector);
-    this.prevBtns = this.slider.querySelectorAll(prevBtnSelector);
-    this.resetBtns = this.slider.querySelectorAll(resetBtnSelector);
+    this.nextBtns = document.querySelectorAll(nextBtnSelector);
+    this.prevBtns = document.querySelectorAll(prevBtnSelector);
+    this.resetBtns = document.querySelectorAll(resetBtnSelector);
     this.activeClass = activeClass;
     this.numberOfSlides = this.slides.length;
     this.__currentSlide = 1;
@@ -91,7 +133,6 @@ class Slider {
   }
   resetSlider() {
     this.currentSlide = 1;
-    console.log(this.currentSlide);
     if (this.updateSlider) this.updateSlider();
   }
   bindBtns() {
@@ -171,6 +212,8 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_MainSlider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/MainSlider */ "./src/js/modules/slider/MainSlider.js");
+/* harmony import */ var _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/MiniSlider */ "./src/js/modules/slider/MiniSlider.js");
+
 
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
@@ -182,6 +225,13 @@ window.addEventListener('DOMContentLoaded', () => {
     popupSelector: '.hanson'
   });
   mainSlider.init();
+  const showupSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    sliderSelector: '.showup__content-slider',
+    nextBtnSelector: '.showup__next',
+    prevBtnSelector: '.showup__prev',
+    activeClass: 'card-active'
+  });
+  showupSlider.init();
 });
 })();
 

@@ -1,4 +1,5 @@
 import MainSlider from './modules/slider/MainSlider'
+import MiniSlider from './modules/slider/MiniSlider'
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
@@ -10,4 +11,12 @@ window.addEventListener('DOMContentLoaded', () => {
         popupSelector: '.hanson'
     })
     mainSlider.init()
+
+    const showupSlider = new MiniSlider({
+        sliderSelector: '.showup__content-slider',
+        nextBtnSelector: '.showup__next',
+        prevBtnSelector: '.showup__prev',
+        activeClass: 'card-active'
+    })
+    showupSlider.init()
 })
