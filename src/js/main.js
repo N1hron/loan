@@ -7,6 +7,13 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log(location.pathname)
     if (location.pathname.includes('modules')) {
         // Code for modules page
+        const mainModulesSlider = new MainSlider({
+            sliderSelector: '.moduleapp', 
+            nextBtnSelector: '.next', 
+            prevBtnSelector: '.prev',
+            resetBtnSelector: '.sidecontrol > a'
+        })
+        mainModulesSlider.init()
     } else {
         const mainSlider = new MainSlider({
             sliderSelector: '.page', 

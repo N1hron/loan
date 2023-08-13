@@ -61,6 +61,8 @@
         &-slider
             position: relative
             width: 860px
+            display: flex
+            overflow: hidden
             .slick-prev
                 position: absolute
                 bottom: 0px
@@ -96,6 +98,7 @@
                     left: 50%
                     transform: translateX(-45%) translateY(-50%)
             .card
+                flex-shrink: 0
                 display: block
                 width: 307px
                 height: 227px
@@ -103,12 +106,15 @@
                 padding: 32px
                 padding-top: 100px
                 overflow: hidden
-                transition: 0.5s all
                 margin-right: 24px
                 cursor: pointer
                 box-shadow: 0 0px 20px rgba(0,0,0,.5)
-                &:active
+                &>div 
+                    transition: 0.5s all
+                &-active
                     .card__title
+                        opacity: 1
+                    .card__controls-arrow
                         opacity: 1
                 &__controls
                     width: 100%
@@ -187,39 +193,39 @@
                 font-size: 13px
                 letter-spacing: 2px
                 text-transform: uppercase
-	&__prev
-		display: inline-block
-		position: relative
-		margin-top: 30px
-		width: 43px
-		height: 43px
-		border: 2px solid rgba(255,255,255,.5)
-		border-radius: 100%
-		background-color: transparent
-		cursor: pointer
-		svg
-			position: absolute
-			width: 12px
-			height: 12px
-			top: 50%
-			left: 50%
-			transform: translateX(-65%) translateY(-50%)
-	&__next
-		display: inline-block
-		position: relative
-		margin-top: 30px
-		width: 43px
-		height: 43px
-		border: 2px solid rgba(255,255,255,.5)
-		border-radius: 100%
-		background-color: transparent
-		cursor: pointer
-		svg
-			position: absolute
-			width: 12px
-			height: 12px
-			top: 50%
-			left: 50%
-			transform: translateX(-45%) translateY(-50%)
+    &__prev
+        display: inline-block
+        position: relative
+        margin-top: 30px
+        width: 43px
+        height: 43px
+        border: 2px solid rgba(255,255,255,.5)
+        border-radius: 100%
+        background-color: transparent
+        cursor: pointer
+        svg
+            position: absolute
+            width: 12px
+            height: 12px
+            top: 50%
+            left: 50%
+            transform: translateX(-65%) translateY(-50%)
+    &__next
+        display: inline-block
+        position: relative
+        margin-top: 30px
+        width: 43px
+        height: 43px
+        border: 2px solid rgba(255,255,255,.5)
+        border-radius: 100%
+        background-color: transparent
+        cursor: pointer
+        svg
+            position: absolute
+            width: 12px
+            height: 12px
+            top: 50%
+            left: 50%
+            transform: translateX(-45%) translateY(-50%)
             
 

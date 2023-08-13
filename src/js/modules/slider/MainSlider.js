@@ -9,8 +9,10 @@ export default class MainSlider extends Slider {
     updateSlider() {
         this.slider.style.top = `-${(this.currentSlide - 1)*100}vh`
 
-        if (this.currentSlide === 3) this.showPopupAfter(3000)
-        else clearTimeout(this.timeoutId)
+        if (this.popup) {
+            if (this.currentSlide === 3) this.showPopupAfter(3000)
+            else clearTimeout(this.timeoutId)
+        }
     }
 
     showPopupAfter(time) {
@@ -28,7 +30,9 @@ export default class MainSlider extends Slider {
         this.slider.style.transition = 'top 0.5s'
         this.slider.style.top = `-0vh`
 
-        this.popup.style.transform = 'translateY(100%)'
-        this.popup.style.transition = 'transform 0.5s'
+        if (this.popup) {
+            this.popup.style.transform = 'translateY(100%)'
+            this.popup.style.transition = 'transform 0.5s'
+        }
     }
 }
