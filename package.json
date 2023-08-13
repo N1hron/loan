@@ -21,6 +21,8 @@
 		"browser-sync": "^2.29.3",
 		"core-js": "^3.31.0",
 		"gulp": "^4.0.2",
+		"gulp-sass": "^5.1.0",
+		"sass": "^1.65.1",
 		"webpack": "^5.86.0",
 		"webpack-stream": "^7.0.0"
 	},

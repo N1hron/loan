@@ -63,25 +63,17 @@ class MiniSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     this.setActiveClass();
   }
   nextSlide() {
-    this.slider.append(this.slides[0]);
+    this.slides[this.numberOfSlides - 1].after(this.slides[0]);
     super.nextSlide();
   }
   prevSlide() {
-    this.slider.prepend(this.slides[this.numberOfSlides - 1]);
+    this.slides[0].before(this.slides[this.numberOfSlides - 1]);
     super.prevSlide();
   }
   setActiveClass() {
-    ;
+    console.log('setting class', this.slides);
     [...this.slides].forEach((slide, i) => {
       i === 0 ? slide.classList.add(this.activeClass) : slide.classList.remove(this.activeClass);
-    });
-  }
-  init() {
-    super.init();
-    this.slider.style.overflow = 'hidden';
-    this.slider.style.display = 'flex';
-    [...this.slides].forEach(slide => {
-      slide.style.flexShrink = '0';
     });
   }
 }
@@ -102,14 +94,14 @@ class Slider {
   constructor(_ref) {
     let {
       sliderSelector,
-      slideSelector,
+      slideClassName,
       nextBtnSelector,
       prevBtnSelector,
       resetBtnSelector,
       activeClass
     } = _ref;
     this.slider = document.querySelector(sliderSelector);
-    this.slides = slideSelector ? this.slider.querySelectorAll(slideSelector) : this.slider.children;
+    this.slides = slideClassName ? this.slider.getElementsByClassName(slideClassName) : this.slider.children;
     this.nextBtns = document.querySelectorAll(nextBtnSelector);
     this.prevBtns = document.querySelectorAll(prevBtnSelector);
     this.resetBtns = document.querySelectorAll(resetBtnSelector);
@@ -218,20 +210,40 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  const mainSlider = new _modules_slider_MainSlider__WEBPACK_IMPORTED_MODULE_0__["default"]({
-    sliderSelector: '.page',
-    nextBtnSelector: '.next',
-    resetBtnSelector: '.sidecontrol > a',
-    popupSelector: '.hanson'
-  });
-  mainSlider.init();
-  const showupSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
-    sliderSelector: '.showup__content-slider',
-    nextBtnSelector: '.showup__next',
-    prevBtnSelector: '.showup__prev',
-    activeClass: 'card-active'
-  });
-  showupSlider.init();
+  console.log(location.pathname);
+  if (location.pathname.includes('modules')) {
+    // Code for modules page
+  } else {
+    const mainSlider = new _modules_slider_MainSlider__WEBPACK_IMPORTED_MODULE_0__["default"]({
+      sliderSelector: '.page',
+      nextBtnSelector: '.next',
+      resetBtnSelector: '.sidecontrol > a',
+      popupSelector: '.hanson'
+    });
+    mainSlider.init();
+    const showupSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+      sliderSelector: '.showup__content-slider',
+      nextBtnSelector: '.showup__next',
+      prevBtnSelector: '.showup__prev',
+      activeClass: 'card-active'
+    });
+    showupSlider.init();
+    const modulesSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+      sliderSelector: '.modules__content-slider',
+      nextBtnSelector: '.modules__info-btns .slick-next',
+      prevBtnSelector: '.modules__info-btns .slick-prev',
+      activeClass: 'card-active'
+    });
+    modulesSlider.init();
+    const feedSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+      sliderSelector: '.feed__slider',
+      nextBtnSelector: '.feed__slider .slick-next',
+      prevBtnSelector: '.feed__slider .slick-prev',
+      slideClassName: 'feed__item',
+      activeClass: 'feed__item-active'
+    });
+    feedSlider.init();
+  }
 });
 })();
 

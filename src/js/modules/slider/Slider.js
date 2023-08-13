@@ -1,7 +1,7 @@
 export default class Slider {
-    constructor({sliderSelector, slideSelector, nextBtnSelector, prevBtnSelector, resetBtnSelector, activeClass}) {
+    constructor({sliderSelector, slideClassName, nextBtnSelector, prevBtnSelector, resetBtnSelector, activeClass}) {
         this.slider = document.querySelector(sliderSelector)
-        this.slides = slideSelector ? this.slider.querySelectorAll(slideSelector) : this.slider.children
+        this.slides = slideClassName ? this.slider.getElementsByClassName(slideClassName) : this.slider.children
         this.nextBtns = document.querySelectorAll(nextBtnSelector)
         this.prevBtns = document.querySelectorAll(prevBtnSelector)
         this.resetBtns = document.querySelectorAll(resetBtnSelector)

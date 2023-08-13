@@ -3,6 +3,7 @@
 const gulp = require("gulp");
 const webpack = require("webpack-stream");
 const browsersync = require("browser-sync");
+const sass = require('gulp-sass')(require('sass'));
 
 const dist = "./dist/";
 // const dist = "/Applications/MAMP/htdocs/test"; // Ссылка на вашу папку на сервере
@@ -45,6 +46,13 @@ gulp.task("build-js", () => {
                 .on("end", browsersync.reload);
 });
 
+gulp.task("build-styles", () => {
+  return gulp.src("./src/assets/sass/style.sass")
+             .pipe(sass().on('error', sass.logError))
+             .pipe(gulp.dest(dist + "/assets/css"))
+             .on("end", browsersync.reload);
+})
+
 gulp.task("copy-assets", () => {
     return gulp.src("./src/assets/**/*.*")
                 .pipe(gulp.dest(dist + "/assets"))
@@ -64,11 +72,12 @@ gulp.task("watch", () => {
     });
     
     gulp.watch("./src/*.html", gulp.parallel("copy-html"));
-    gulp.watch("./src/assets/**/*.*", gulp.parallel("copy-assets"));
+    gulp.watch(["./src/assets/**/*.*", "!./src/assets/sass/*.*"], gulp.parallel("copy-assets"));
+    gulp.watch("./src/assets/sass/*.*", gulp.parallel("build-styles"));
     gulp.watch("./src/js/**/*.js", gulp.parallel("build-js"));
 });
 
-gulp.task("build", gulp.parallel("copy-html", "copy-assets", "build-js"));
+gulp.task("build", gulp.parallel("copy-html", "build-styles", "copy-assets", "build-js"));
 
 gulp.task("build-prod-js", () => {
     return gulp.src("./src/js/main.js")
