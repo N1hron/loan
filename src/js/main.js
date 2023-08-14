@@ -1,10 +1,12 @@
-import MainSlider from './modules/slider/MainSlider'
-import MiniSlider from './modules/slider/MiniSlider'
+import MainSlider from './modules/slider/mainSlider'
+import MiniSlider from './modules/slider/miniSlider'
+import diffList from './modules/DiffList'
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
 
-    console.log(location.pathname)
+    console.log('current pathname: ', location.pathname)
+
     if (location.pathname.includes('modules')) {
         // Code for modules page
         const mainModulesSlider = new MainSlider({
@@ -15,6 +17,9 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         mainModulesSlider.init()
     } else {
+
+        // Siders:
+
         const mainSlider = new MainSlider({
             sliderSelector: '.page', 
             nextBtnSelector: '.next', 
@@ -47,5 +52,19 @@ window.addEventListener('DOMContentLoaded', () => {
             activeClass: 'feed__item-active'
         })
         feedSlider.init()
+
+        // Difference lists:
+
+        const tenYearsList = new diffList({
+            listSelector: '.officerold'
+        })
+
+        tenYearsList.init()
+
+        const todayList = new diffList({
+            listSelector: '.officernew'
+        })
+
+        todayList.init()
     }
 })

@@ -42,6 +42,6 @@ export default class Slider {
 
     init() {
         this.bindBtns()
-        console.log(this)
+        // console.log(this)
     }
 }

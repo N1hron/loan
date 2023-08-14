@@ -2,9 +2,58 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/js/modules/slider/MainSlider.js":
+/***/ "./src/js/modules/DiffList.js":
+/*!************************************!*\
+  !*** ./src/js/modules/DiffList.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ diffList)
+/* harmony export */ });
+class diffList {
+  constructor(_ref) {
+    let {
+      listSelector,
+      listItemSelector = '.officer__card-item:not(.officer__card-item:last-child)',
+      showMoreBtnSelector = '.officer__card-item:last-child'
+    } = _ref;
+    this.list = document.querySelector(listSelector);
+    this.listItems = this.list.querySelectorAll(listItemSelector);
+    this.showMoreBtn = this.list.querySelector(showMoreBtnSelector);
+    this.numberOfItems = this.listItems.length;
+    this.numberOfVisibleItems = 0;
+  }
+  updateList() {
+    for (let i = 0; i < this.numberOfVisibleItems; i++) {
+      this.listItems[i].style.display = '';
+      this.listItems[i].classList.add('animated', 'fadeIn');
+    }
+    if (this.numberOfVisibleItems === this.numberOfItems) {
+      this.showMoreBtn.classList.add('animated', 'fadeOut');
+      this.showMoreBtn.style.pointerEvents = 'none';
+      setTimeout(() => {
+        this.showMoreBtn.remove();
+      }, getComputedStyle(this.showMoreBtn).animationDuration.slice(0, -1) * 1000);
+    }
+  }
+  init() {
+    console.log(this);
+    this.listItems.forEach(item => item.style.display = 'none');
+    this.showMoreBtn.addEventListener('click', () => {
+      this.numberOfVisibleItems++;
+      this.updateList();
+    });
+    this.updateList();
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/slider/mainSlider.js":
 /*!*********************************************!*\
-  !*** ./src/js/modules/slider/MainSlider.js ***!
+  !*** ./src/js/modules/slider/mainSlider.js ***!
   \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -12,9 +61,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ MainSlider)
 /* harmony export */ });
-/* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Slider */ "./src/js/modules/slider/Slider.js");
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
 
-class MainSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(_ref) {
     let {
       popupSelector,
@@ -50,9 +99,9 @@ class MainSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
-/***/ "./src/js/modules/slider/MiniSlider.js":
+/***/ "./src/js/modules/slider/miniSlider.js":
 /*!*********************************************!*\
-  !*** ./src/js/modules/slider/MiniSlider.js ***!
+  !*** ./src/js/modules/slider/miniSlider.js ***!
   \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -60,9 +109,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ MiniSlider)
 /* harmony export */ });
-/* harmony import */ var _Slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Slider */ "./src/js/modules/slider/Slider.js");
+/* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/modules/slider/slider.js");
 
-class MiniSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
   updateSlider() {
     this.setActiveClass();
   }
@@ -84,9 +133,9 @@ class MiniSlider extends _Slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
-/***/ "./src/js/modules/slider/Slider.js":
+/***/ "./src/js/modules/slider/slider.js":
 /*!*****************************************!*\
-  !*** ./src/js/modules/slider/Slider.js ***!
+  !*** ./src/js/modules/slider/slider.js ***!
   \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -138,7 +187,7 @@ class Slider {
   }
   init() {
     this.bindBtns();
-    console.log(this);
+    // console.log(this)
   }
 }
 
@@ -207,17 +256,19 @@ var __webpack_exports__ = {};
   !*** ./src/js/main.js ***!
   \************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_slider_MainSlider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/MainSlider */ "./src/js/modules/slider/MainSlider.js");
-/* harmony import */ var _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/MiniSlider */ "./src/js/modules/slider/MiniSlider.js");
+/* harmony import */ var _modules_slider_mainSlider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/mainSlider */ "./src/js/modules/slider/mainSlider.js");
+/* harmony import */ var _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/miniSlider */ "./src/js/modules/slider/miniSlider.js");
+/* harmony import */ var _modules_DiffList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/DiffList */ "./src/js/modules/DiffList.js");
+
 
 
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  console.log(location.pathname);
+  console.log('current pathname: ', location.pathname);
   if (location.pathname.includes('modules')) {
     // Code for modules page
-    const mainModulesSlider = new _modules_slider_MainSlider__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    const mainModulesSlider = new _modules_slider_mainSlider__WEBPACK_IMPORTED_MODULE_0__["default"]({
       sliderSelector: '.moduleapp',
       nextBtnSelector: '.next',
       prevBtnSelector: '.prev',
@@ -225,28 +276,30 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     mainModulesSlider.init();
   } else {
-    const mainSlider = new _modules_slider_MainSlider__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    // Siders:
+
+    const mainSlider = new _modules_slider_mainSlider__WEBPACK_IMPORTED_MODULE_0__["default"]({
       sliderSelector: '.page',
       nextBtnSelector: '.next',
       resetBtnSelector: '.sidecontrol > a',
       popupSelector: '.hanson'
     });
     mainSlider.init();
-    const showupSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    const showupSlider = new _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
       sliderSelector: '.showup__content-slider',
       nextBtnSelector: '.showup__next',
       prevBtnSelector: '.showup__prev',
       activeClass: 'card-active'
     });
     showupSlider.init();
-    const modulesSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    const modulesSlider = new _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
       sliderSelector: '.modules__content-slider',
       nextBtnSelector: '.modules__info-btns .slick-next',
       prevBtnSelector: '.modules__info-btns .slick-prev',
       activeClass: 'card-active'
     });
     modulesSlider.init();
-    const feedSlider = new _modules_slider_MiniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    const feedSlider = new _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
       sliderSelector: '.feed__slider',
       nextBtnSelector: '.feed__slider .slick-next',
       prevBtnSelector: '.feed__slider .slick-prev',
@@ -254,6 +307,17 @@ window.addEventListener('DOMContentLoaded', () => {
       activeClass: 'feed__item-active'
     });
     feedSlider.init();
+
+    // Difference lists:
+
+    const tenYearsList = new _modules_DiffList__WEBPACK_IMPORTED_MODULE_2__["default"]({
+      listSelector: '.officerold'
+    });
+    tenYearsList.init();
+    const todayList = new _modules_DiffList__WEBPACK_IMPORTED_MODULE_2__["default"]({
+      listSelector: '.officernew'
+    });
+    todayList.init();
   }
 });
 })();

@@ -77,7 +77,7 @@ gulp.task("watch", () => {
     gulp.watch("./src/js/**/*.js", gulp.parallel("build-js"));
 });
 
-gulp.task("build", gulp.parallel("copy-html", "build-styles", "copy-assets", "build-js"));
+gulp.task("build", gulp.series(gulp.parallel("copy-html", "copy-assets", "build-js"), "build-styles"));
 
 gulp.task("build-prod-js", () => {
     return gulp.src("./src/js/main.js")
