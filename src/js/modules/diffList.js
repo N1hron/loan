@@ -27,15 +27,14 @@ export default class diffList {
         }
     }
 
+    showMore() {
+        this.numberOfVisibleItems++
+        this.updateList()
+    }
+
     init() {
-        console.log(this)
-
         this.listItems.forEach(item => item.style.display = 'none')
-        this.showMoreBtn.addEventListener('click', () => {
-            this.numberOfVisibleItems++
-            this.updateList()
-        })
-
+        this.showMoreBtn.addEventListener('click', () => this.showMore())
         this.updateList()
     }
 }

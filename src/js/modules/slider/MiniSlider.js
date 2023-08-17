@@ -16,7 +16,6 @@ export default class MiniSlider extends Slider {
     }
 
     setActiveClass() {
-        console.log('setting class', this.slides)
         ;[...this.slides].forEach((slide, i) => {
             i === 0 ? slide.classList.add(this.activeClass) : slide.classList.remove(this.activeClass)
         })

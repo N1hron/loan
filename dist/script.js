@@ -38,13 +38,13 @@ class diffList {
       }, getComputedStyle(this.showMoreBtn).animationDuration.slice(0, -1) * 1000);
     }
   }
+  showMore() {
+    this.numberOfVisibleItems++;
+    this.updateList();
+  }
   init() {
-    console.log(this);
     this.listItems.forEach(item => item.style.display = 'none');
-    this.showMoreBtn.addEventListener('click', () => {
-      this.numberOfVisibleItems++;
-      this.updateList();
-    });
+    this.showMoreBtn.addEventListener('click', () => this.showMore());
     this.updateList();
   }
 }
@@ -124,7 +124,7 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     super.prevSlide();
   }
   setActiveClass() {
-    console.log('setting class', this.slides);
+    ;
     [...this.slides].forEach((slide, i) => {
       i === 0 ? slide.classList.add(this.activeClass) : slide.classList.remove(this.activeClass);
     });
@@ -188,6 +188,72 @@ class Slider {
   init() {
     this.bindBtns();
     // console.log(this)
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/videoPlayer.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/videoPlayer.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ VideoPlayer)
+/* harmony export */ });
+class VideoPlayer {
+  constructor(_ref) {
+    let {
+      openBtnSelector,
+      closeBtnSelector = '.overlay .close',
+      overlaySelector = '.overlay'
+    } = _ref;
+    this.openBtns = document.querySelectorAll(openBtnSelector);
+    this.closeBtn = document.querySelector(closeBtnSelector);
+    this.overlay = document.querySelector(overlaySelector);
+    this.videoId = null;
+    this.player = null;
+    this.done = false;
+  }
+  openPlayer(id) {
+    if (this.videoId !== id) {
+      this.videoId = id;
+      if (!this.player) this.createPlayer();else this.loadVideoById();
+    }
+    this.overlay.style.display = 'flex';
+    this.overlay.classList.remove('fadeOut');
+    this.overlay.classList.add('fadeIn');
+  }
+  closePlayer() {
+    this.pauseVideo();
+    this.overlay.classList.remove('fadeIn');
+    this.overlay.classList.add('fadeOut');
+    setTimeout(() => this.overlay.style.display = '', this.overlay.style.animationDuration.replace('s', '') * 1000);
+  }
+  createPlayer() {
+    this.player = new YT.Player('frame', {
+      height: '100%',
+      width: '100%',
+      videoId: this.videoId
+    });
+  }
+  pauseVideo() {
+    this.player.pauseVideo();
+  }
+  stopVideo() {
+    this.player.stopVideo();
+  }
+  loadVideoById() {
+    this.player.loadVideoById(this.videoId);
+  }
+  init() {
+    console.log(this);
+    this.overlay.classList.add('animated');
+    this.overlay.style.animationDuration = '0.25s';
+    this.openBtns.forEach(btn => btn.addEventListener('click', () => this.openPlayer(btn.getAttribute('data-url'))));
+    this.closeBtn.addEventListener('click', () => this.closePlayer());
   }
 }
 
@@ -259,6 +325,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_mainSlider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/mainSlider */ "./src/js/modules/slider/mainSlider.js");
 /* harmony import */ var _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/miniSlider */ "./src/js/modules/slider/miniSlider.js");
 /* harmony import */ var _modules_DiffList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/DiffList */ "./src/js/modules/DiffList.js");
+/* harmony import */ var _modules_videoPlayer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/videoPlayer */ "./src/js/modules/videoPlayer.js");
+
 
 
 
@@ -318,6 +386,13 @@ window.addEventListener('DOMContentLoaded', () => {
       listSelector: '.officernew'
     });
     todayList.init();
+
+    // Video players:
+
+    const mainPageVideoPlayer = new _modules_videoPlayer__WEBPACK_IMPORTED_MODULE_3__["default"]({
+      openBtnSelector: '.play'
+    });
+    mainPageVideoPlayer.init();
   }
 });
 })();

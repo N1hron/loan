@@ -1,6 +1,7 @@
 import MainSlider from './modules/slider/mainSlider'
 import MiniSlider from './modules/slider/miniSlider'
 import diffList from './modules/DiffList'
+import VideoPlayer from './modules/videoPlayer'
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
@@ -58,13 +59,16 @@ window.addEventListener('DOMContentLoaded', () => {
         const tenYearsList = new diffList({
             listSelector: '.officerold'
         })
-
         tenYearsList.init()
 
         const todayList = new diffList({
             listSelector: '.officernew'
         })
-
         todayList.init()
+
+        // Video players:
+
+        const mainPageVideoPlayer = new VideoPlayer({openBtnSelector: '.play'})
+        mainPageVideoPlayer.init()
     }
 })
