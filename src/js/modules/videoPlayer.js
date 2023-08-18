@@ -1,11 +1,12 @@
 export default class VideoPlayer {
-    constructor({openBtnSelector, closeBtnSelector = '.overlay .close', overlaySelector = '.overlay'}) {
-        this.openBtns = document.querySelectorAll(openBtnSelector)
+    constructor({playBtnSelector, closeBtnSelector = '.overlay .close', overlaySelector = '.overlay', moduleClass}) {
+        this.playBtns = document.querySelectorAll(playBtnSelector)
         this.closeBtn = document.querySelector(closeBtnSelector)
         this.overlay = document.querySelector(overlaySelector)
         this.videoId = null
         this.player = null
         this.done = false
+        this.moduleClass = moduleClass
     }
 
     openPlayer(id) {
@@ -32,7 +33,12 @@ export default class VideoPlayer {
         this.player = new YT.Player('frame', {
             height: '100%',
             width: '100%',
-            videoId: this.videoId
+            videoId: this.videoId,
+            playerVars: { 'autoplay': 0 },
+
+            events: {
+                'onStateChange': () => this.onPlayerStateChange()
+            }
         })
     }
 
@@ -46,15 +52,44 @@ export default class VideoPlayer {
 
     loadVideoById() {
         this.player.loadVideoById(this.videoId)
+        this.stopVideo()
+    }
+
+    onPlayerStateChange() {
+        const duration = this.player.getDuration(),
+              currentTime = this.player.getCurrentTime()
+        
+        if ((currentTime >= duration / 2) && duration !== 0) this.unlockNextModuleIfPossible()
+    }
+
+    unlockNextModuleIfPossible() {
+        const nextModule = this.currentModule.nextElementSibling
+
+        if (nextModule && nextModule.classList.contains(this.moduleClass) && nextModule.querySelector('.closed')) {
+            const nextModuleOpenBtn = this.pressedBtn.cloneNode(true)
+
+            nextModule.style.filter = 'none'
+            nextModule.style.opacity = '1'
+            
+            nextModule.querySelector(`.${this.pressedBtn.className}`).replaceWith(nextModuleOpenBtn)
+            nextModuleOpenBtn.addEventListener('click', () => this.onPlayBtnClick(nextModuleOpenBtn))
+        }
+    }
+
+    onPlayBtnClick(btn) {
+        if (!btn.querySelector('.closed')) {
+            this.openPlayer(btn.getAttribute('data-url'))
+
+            this.pressedBtn = btn
+            if (this.moduleClass) this.currentModule = this.pressedBtn.closest(`.${this.moduleClass}`)
+        }
     }
 
     init() {
-        console.log(this)
-
         this.overlay.classList.add('animated')
         this.overlay.style.animationDuration = '0.25s'
         
-        this.openBtns.forEach(btn => btn.addEventListener('click', () => this.openPlayer(btn.getAttribute('data-url'))))
+        this.playBtns.forEach(btn => btn.addEventListener('click', () => this.onPlayBtnClick(btn)))
         this.closeBtn.addEventListener('click', () => this.closePlayer())
     }
 }

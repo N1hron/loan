@@ -9,7 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log('current pathname: ', location.pathname)
 
     if (location.pathname.includes('modules')) {
-        // Code for modules page
+
+        // Code for modules page:
+
         const mainModulesSlider = new MainSlider({
             sliderSelector: '.moduleapp', 
             nextBtnSelector: '.next', 
@@ -17,6 +19,14 @@ window.addEventListener('DOMContentLoaded', () => {
             resetBtnSelector: '.sidecontrol > a'
         })
         mainModulesSlider.init()
+
+        // Video player:
+
+        const modulesVideoPlayer = new VideoPlayer({
+            playBtnSelector: '.play',
+            moduleClass: 'module__video-item'
+        })
+        modulesVideoPlayer.init()
     } else {
 
         // Siders:
@@ -66,9 +76,9 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         todayList.init()
 
-        // Video players:
+        // Video player:
 
-        const mainPageVideoPlayer = new VideoPlayer({openBtnSelector: '.play'})
+        const mainPageVideoPlayer = new VideoPlayer({playBtnSelector: '.play'})
         mainPageVideoPlayer.init()
     }
 })
