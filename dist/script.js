@@ -67,15 +67,17 @@ class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
   constructor(_ref) {
     let {
       popupSelector,
+      popupSlide,
       ...rest
     } = _ref;
     super(rest);
     this.popup = document.querySelector(popupSelector);
+    this.popupSlide = popupSlide;
   }
   updateSlider() {
     this.slider.style.top = `-${(this.currentSlide - 1) * 100}vh`;
     if (this.popup) {
-      if (this.currentSlide === 3) this.showPopupAfter(3000);else clearTimeout(this.timeoutId);
+      if (this.currentSlide === this.popupSlide) this.showPopupAfter(3000);else clearTimeout(this.timeoutId);
     }
   }
   showPopupAfter(time) {
@@ -151,7 +153,9 @@ class Slider {
       nextBtnSelector,
       prevBtnSelector,
       resetBtnSelector,
-      activeClass
+      activeClass,
+      auto = false,
+      interval = 5000
     } = _ref;
     this.slider = document.querySelector(sliderSelector);
     this.slides = slideClassName ? this.slider.getElementsByClassName(slideClassName) : this.slider.children;
@@ -161,6 +165,10 @@ class Slider {
     this.activeClass = activeClass;
     this.numberOfSlides = this.slides.length;
     this.__currentSlide = 1;
+    this.auto = auto;
+    this.interval = interval;
+    this.isVisible = false;
+    this.intervalId = null;
   }
   set currentSlide(value) {
     if (value > this.currentSlide) this.__currentSlide = value > this.numberOfSlides ? 1 : value;else this.__currentSlide = value < 1 ? this.numberOfSlides : value;
@@ -180,14 +188,64 @@ class Slider {
     this.currentSlide = 1;
     if (this.updateSlider) this.updateSlider();
   }
+  setupAutoSlideshow() {
+    if (this.auto && this.isVisible && !this.intervalId) this.intervalId = setInterval(() => this.nextSlide(), this.interval);
+  }
+  stopAutoSlideshow() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+  resetAutoSlideshow() {
+    this.stopAutoSlideshow();
+    this.setupAutoSlideshow();
+  }
+  setIsVisible() {
+    const rect = this.slider.getBoundingClientRect(),
+      clientHeight = document.documentElement.clientHeight,
+      sliderHeight = this.slider.clientHeight;
+    this.isVisible = rect.top < clientHeight && rect.top > -sliderHeight ? true : false;
+    this.stopAutoSlideshow();
+    this.setupAutoSlideshow();
+  }
+  setUpObserver() {
+    const target = document.querySelector('.page'),
+      config = {
+        attributes: true,
+        attributeOldValue: true,
+        attributeFilter: ['style']
+      };
+    new MutationObserver(mutations => {
+      for (let mutation of mutations) {
+        const oldTop = mutation.oldValue ? mutation.oldValue.split(';').find(element => element.includes('top:')) : null;
+        const oldTopValue = oldTop ? oldTop.trim().split(' ')[1] : null,
+          currentTopValue = mutation.target.style.top;
+        if (oldTopValue && oldTopValue !== currentTopValue) {
+          setTimeout(() => this.setIsVisible(), getComputedStyle(target).transitionDuration.replace('s', '') * 1000);
+        }
+      }
+    }).observe(target, config);
+  }
   bindBtns() {
-    this.nextBtns.forEach(btn => btn.addEventListener('click', () => this.nextSlide()));
-    this.prevBtns.forEach(btn => btn.addEventListener('click', () => this.prevSlide()));
-    this.resetBtns.forEach(btn => btn.addEventListener('click', () => this.resetSlider()));
+    this.nextBtns.forEach(btn => btn.addEventListener('click', () => {
+      this.nextSlide();
+      this.resetAutoSlideshow();
+    }));
+    this.prevBtns.forEach(btn => btn.addEventListener('click', () => {
+      this.prevSlide();
+      this.resetAutoSlideshow();
+    }));
+    this.resetBtns.forEach(btn => btn.addEventListener('click', () => {
+      this.resetSlider();
+      this.resetAutoSlideshow();
+    }));
   }
   init() {
+    this.setIsVisible();
     this.bindBtns();
-    // console.log(this)
+    this.setupAutoSlideshow();
+    this.setUpObserver();
   }
 }
 
@@ -389,7 +447,8 @@ window.addEventListener('DOMContentLoaded', () => {
       sliderSelector: '.page',
       nextBtnSelector: '.next',
       resetBtnSelector: '.sidecontrol > a',
-      popupSelector: '.hanson'
+      popupSelector: '.hanson',
+      popupSlide: 3
     });
     mainSlider.init();
     const showupSlider = new _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({
@@ -403,7 +462,8 @@ window.addEventListener('DOMContentLoaded', () => {
       sliderSelector: '.modules__content-slider',
       nextBtnSelector: '.modules__info-btns .slick-next',
       prevBtnSelector: '.modules__info-btns .slick-prev',
-      activeClass: 'card-active'
+      activeClass: 'card-active',
+      auto: true
     });
     modulesSlider.init();
     const feedSlider = new _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__["default"]({

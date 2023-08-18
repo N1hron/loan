@@ -1,16 +1,17 @@
 import Slider from './slider'
 
 export default class MainSlider extends Slider {
-    constructor({popupSelector, ...rest}) {
+    constructor({popupSelector, popupSlide, ...rest}) {
         super(rest)
         this.popup = document.querySelector(popupSelector)
+        this.popupSlide = popupSlide
     }
 
     updateSlider() {
         this.slider.style.top = `-${(this.currentSlide - 1)*100}vh`
 
         if (this.popup) {
-            if (this.currentSlide === 3) this.showPopupAfter(3000)
+            if (this.currentSlide === this.popupSlide) this.showPopupAfter(3000)
             else clearTimeout(this.timeoutId)
         }
     }

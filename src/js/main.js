@@ -35,7 +35,8 @@ window.addEventListener('DOMContentLoaded', () => {
             sliderSelector: '.page', 
             nextBtnSelector: '.next', 
             resetBtnSelector: '.sidecontrol > a', 
-            popupSelector: '.hanson'
+            popupSelector: '.hanson',
+            popupSlide: 3
         })
         mainSlider.init()
     
@@ -51,7 +52,8 @@ window.addEventListener('DOMContentLoaded', () => {
             sliderSelector: '.modules__content-slider',
             nextBtnSelector: '.modules__info-btns .slick-next',
             prevBtnSelector: '.modules__info-btns .slick-prev',
-            activeClass: 'card-active'
+            activeClass: 'card-active',
+            auto: true
         })
         modulesSlider.init()
     
