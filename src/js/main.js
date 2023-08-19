@@ -4,6 +4,7 @@ import diffList from './modules/DiffList'
 import VideoPlayer from './modules/videoPlayer'
 import Accordion from './modules/accordion'
 import Download from './modules/download'
+import Form from './modules/form'
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
@@ -95,5 +96,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const mainPageVideoPlayer = new VideoPlayer({playBtnSelector: '.play'})
         mainPageVideoPlayer.init()
+
+        // Forms:
+
+        const helpForm = new Form('.join__evolution form', 'assets/question.php')
+        helpForm.init()
     }
 })

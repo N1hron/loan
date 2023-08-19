@@ -115,7 +115,68 @@ class Download {
   }
   init() {
     this.bindTriggers();
-    console.log(this);
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/form.js":
+/*!********************************!*\
+  !*** ./src/js/modules/form.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Form)
+/* harmony export */ });
+class Form {
+  constructor(formSelector, url) {
+    this.form = document.querySelector(formSelector);
+    this.submitBtn = this.form.querySelector('button[type="submit"]');
+    this.message = document.createElement('div');
+    this.url = url;
+    this.allowSubmit = true;
+  }
+  async sendFormData() {
+    const formData = new FormData(this.form);
+    this.message.className = 'form__message animated fadeIn';
+    this.submitBtn.after(this.message);
+    this.message.textContent = 'Loading...';
+    try {
+      const response = await fetch(this.url, {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) throw new Error('Could not send form data, status: ' + response.status + ` (${response.statusText})`);
+      const txt = await response.text();
+      console.log(txt);
+      this.message.classList.add('form__message_success');
+      this.message.textContent = 'We will contact you soon!';
+      this.form.reset();
+    } catch (error) {
+      console.error(error);
+      this.message.classList.add('form__message_error');
+      this.message.textContent = 'Something went wrong...';
+    } finally {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = setTimeout(() => {
+        this.message.classList.add('fadeOut');
+        setTimeout(() => {
+          this.message.remove();
+          this.allowSubmit = true;
+        }, getComputedStyle(this.message).animationDuration.replace('s', '') * 1000);
+      }, 5000);
+    }
+  }
+  init() {
+    this.form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (this.allowSubmit) {
+        this.allowSubmit = false;
+        this.sendFormData();
+      }
+    });
   }
 }
 
@@ -481,6 +542,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_videoPlayer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/videoPlayer */ "./src/js/modules/videoPlayer.js");
 /* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
 /* harmony import */ var _modules_download__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/download */ "./src/js/modules/download.js");
+/* harmony import */ var _modules_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/form */ "./src/js/modules/form.js");
+
 
 
 
@@ -571,6 +634,11 @@ window.addEventListener('DOMContentLoaded', () => {
       playBtnSelector: '.play'
     });
     mainPageVideoPlayer.init();
+
+    // Forms:
+
+    const helpForm = new _modules_form__WEBPACK_IMPORTED_MODULE_6__["default"]('.join__evolution form', 'assets/question.php');
+    helpForm.init();
   }
 });
 })();

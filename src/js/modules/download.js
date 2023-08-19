@@ -17,6 +17,5 @@ export default class Download {
 
     init() {
         this.bindTriggers()
-        console.log(this)
     }
 }
