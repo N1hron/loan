@@ -5,6 +5,7 @@ import VideoPlayer from './modules/videoPlayer'
 import Accordion from './modules/accordion'
 import Download from './modules/download'
 import Form from './modules/form'
+import Mask from './modules/mask'
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
@@ -99,5 +100,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const helpForm = new Form('.join__evolution form', 'assets/question.php')
         helpForm.init()
+
+        const scheduleFrom = new Form('.schedule__form form', 'assets/question.php')
+        scheduleFrom.init()
+
+        // Phone mask:
+
+        const usPhoneMask = new Mask('input[name="phone"]')
+        usPhoneMask.init()
     }
 })

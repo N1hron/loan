@@ -47,7 +47,7 @@ export default class Form {
     }
 
     enableEmailValidation() {
-        this.form.querySelector('[name="email"]').addEventListener('input', function() {
+        this.form.querySelector('[type="email"]').addEventListener('input', function() {
             this.value = this.value.replace(/[а-яё]/ig, '')
         })
     }
