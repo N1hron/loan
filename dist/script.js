@@ -51,6 +51,76 @@ class diffList {
 
 /***/ }),
 
+/***/ "./src/js/modules/accordion.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/accordion.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Accordion)
+/* harmony export */ });
+class Accordion {
+  constructor(triggerSelector, panelSelector) {
+    this.triggers = document.querySelectorAll(triggerSelector);
+    this.panels = document.querySelectorAll(panelSelector);
+  }
+  onTriggerClick(index) {
+    const height = this.panels[index].scrollHeight + 'px';
+    this.panels[index].style.maxHeight = this.panels[index].style.maxHeight === '0px' ? height : '0px';
+  }
+  bindTriggers() {
+    this.triggers.forEach((trigger, i) => {
+      trigger.addEventListener('click', () => this.onTriggerClick(i));
+    });
+  }
+  init() {
+    this.panels.forEach(panel => {
+      panel.style.display = 'block';
+      panel.style.overflow = 'hidden';
+      panel.style.transition = 'max-height 0.5s';
+      panel.style.maxHeight = '0px';
+    });
+    this.bindTriggers();
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/modules/download.js":
+/*!************************************!*\
+  !*** ./src/js/modules/download.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Download)
+/* harmony export */ });
+class Download {
+  constructor(triggerSelector, path) {
+    this.triggers = document.querySelectorAll(triggerSelector);
+    this.path = path;
+  }
+  download() {
+    let path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.path;
+    const a = document.createElement('a');
+    a.setAttribute('href', path);
+    a.setAttribute('download', '');
+    a.click();
+  }
+  bindTriggers() {
+    this.triggers.forEach(trigger => trigger.addEventListener('click', () => this.download()));
+  }
+  init() {
+    this.bindTriggers();
+    console.log(this);
+  }
+}
+
+/***/ }),
+
 /***/ "./src/js/modules/slider/mainSlider.js":
 /*!*********************************************!*\
   !*** ./src/js/modules/slider/mainSlider.js ***!
@@ -409,6 +479,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_miniSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/miniSlider */ "./src/js/modules/slider/miniSlider.js");
 /* harmony import */ var _modules_DiffList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/DiffList */ "./src/js/modules/DiffList.js");
 /* harmony import */ var _modules_videoPlayer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/videoPlayer */ "./src/js/modules/videoPlayer.js");
+/* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
+/* harmony import */ var _modules_download__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/download */ "./src/js/modules/download.js");
+
+
 
 
 
@@ -435,6 +509,16 @@ window.addEventListener('DOMContentLoaded', () => {
       moduleClass: 'module__video-item'
     });
     modulesVideoPlayer.init();
+
+    // Accordion:
+
+    const moduleOneAccordion = new _modules_accordion__WEBPACK_IMPORTED_MODULE_4__["default"]('.module__info-show', '.msg');
+    moduleOneAccordion.init();
+
+    // Download PDF:
+
+    const pdfDownload = new _modules_download__WEBPACK_IMPORTED_MODULE_5__["default"]('.download', 'assets/dummy.pdf');
+    pdfDownload.init();
   } else {
     // Siders:
 

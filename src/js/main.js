@@ -35,6 +35,11 @@ window.addEventListener('DOMContentLoaded', () => {
         const moduleOneAccordion = new Accordion('.module__info-show', '.msg')
         moduleOneAccordion.init()
 
+        // Download PDF:
+
+        const pdfDownload = new Download('.download', 'assets/dummy.pdf')
+        pdfDownload.init()
+
     } else {
 
         // Siders:
