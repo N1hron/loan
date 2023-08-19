@@ -169,14 +169,21 @@ class Form {
       }, 5000);
     }
   }
-  init() {
-    this.form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (this.allowSubmit) {
-        this.allowSubmit = false;
-        this.sendFormData();
-      }
+  enableEmailValidation() {
+    this.form.querySelector('[name="email"]').addEventListener('input', function () {
+      this.value = this.value.replace(/[а-яё]/ig, '');
     });
+  }
+  onSubmit(event) {
+    event.preventDefault();
+    if (this.allowSubmit) {
+      this.allowSubmit = false;
+      this.sendFormData();
+    }
+  }
+  init() {
+    this.form.addEventListener('submit', event => this.onSubmit(event));
+    this.enableEmailValidation();
   }
 }
 
@@ -553,7 +560,6 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  console.log('current pathname: ', location.pathname);
   if (location.pathname.includes('modules')) {
     // Code for modules page:
 

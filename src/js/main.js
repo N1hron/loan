@@ -9,8 +9,6 @@ import Form from './modules/form'
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
 
-    console.log('current pathname: ', location.pathname)
-
     if (location.pathname.includes('modules')) {
 
         // Code for modules page:

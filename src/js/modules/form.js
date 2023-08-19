@@ -46,13 +46,22 @@ export default class Form {
         }
     }
 
-    init() {
-        this.form.addEventListener('submit', event => {
-            event.preventDefault()
-            if (this.allowSubmit) {
-                this.allowSubmit = false
-                this.sendFormData()
-            }
+    enableEmailValidation() {
+        this.form.querySelector('[name="email"]').addEventListener('input', function() {
+            this.value = this.value.replace(/[а-яё]/ig, '')
         })
+    }
+
+    onSubmit(event) {
+        event.preventDefault()
+        if (this.allowSubmit) {
+            this.allowSubmit = false
+            this.sendFormData()
+        }
+    }
+
+    init() {
+        this.form.addEventListener('submit', event => this.onSubmit(event))
+        this.enableEmailValidation()
     }
 }
