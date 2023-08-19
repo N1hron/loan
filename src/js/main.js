@@ -2,6 +2,8 @@ import MainSlider from './modules/slider/mainSlider'
 import MiniSlider from './modules/slider/miniSlider'
 import diffList from './modules/DiffList'
 import VideoPlayer from './modules/videoPlayer'
+import Accordion from './modules/accordion'
+import Download from './modules/download'
 
 window.addEventListener('DOMContentLoaded', () => {
     'use strict'
@@ -27,6 +29,12 @@ window.addEventListener('DOMContentLoaded', () => {
             moduleClass: 'module__video-item'
         })
         modulesVideoPlayer.init()
+
+        // Accordion:
+
+        const moduleOneAccordion = new Accordion('.module__info-show', '.msg')
+        moduleOneAccordion.init()
+
     } else {
 
         // Siders:
